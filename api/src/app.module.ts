@@ -9,10 +9,14 @@ import { Cart } from './cart/cart.entity';
 import { CartItem } from './cart/cart-item.entity';
 import { Order } from './order/order.entity';
 import { OrderItem } from './order/order-item.entity';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({}),
+    ConfigModule.forRoot({
+      envFilePath: ['.env.development', '.env.production', '.env'],
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST || 'localhost',
@@ -24,6 +28,8 @@ import { OrderItem } from './order/order-item.entity';
       synchronize: process.env.NODE_ENV === 'production' ? false : true,
     }),
     ProductModule,
+    UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

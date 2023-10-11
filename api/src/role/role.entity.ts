@@ -7,12 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-export enum RoleName {
-  SUPERADMIN = 'SUPERADMIN',
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
+import { RoleName } from './role.enum';
 
 @Entity('role')
 export class Role {

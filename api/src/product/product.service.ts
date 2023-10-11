@@ -1,8 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from './product.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto, EditProductDto } from './dto';
+import { Product } from './product.entity';
 
 @Injectable()
 export class ProductService {
@@ -19,7 +19,7 @@ export class ProductService {
     try {
       const product = await this.productRepository.findOneBy({ id });
 
-      if (!product) throw new ForbiddenException('Product not found');
+      if (!product) throw new NotFoundException('Product not found');
 
       return product;
     } catch (error) {
@@ -59,7 +59,7 @@ export class ProductService {
     try {
       const product = await this.productRepository.findOneBy({ id });
 
-      if (!product) throw new ForbiddenException('Product not found');
+      if (!product) throw new NotFoundException('Product not found');
 
       await this.productRepository.remove(product);
 
