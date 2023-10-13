@@ -15,10 +15,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(user: { email: string; id: string }) {
-    const payload = { email: user.email, sub: user.id };
+  async signIn(input: SignInDto) {
+    const user = await this.validateUser(input);
+
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign({ sub: user.id }),
     };
   }
 
@@ -28,7 +29,7 @@ export class AuthService {
       throw new ForbiddenException('Email already exists, try sign in instead');
     }
 
-    const hashedPassword = await this.hashPassword(user.password);
+    const hashedPassword = await this.hashData(user.password);
     const newUser = await this.userService.create({
       ...user,
       password: hashedPassword,
@@ -69,9 +70,9 @@ export class AuthService {
     }
   }
 
-  async hashPassword(password: string): Promise<string> {
+  async hashData(input: string): Promise<string> {
     try {
-      return await argon2.hash(password);
+      return await argon2.hash(input);
     } catch (error) {
       throw error;
     }

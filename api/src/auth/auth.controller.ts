@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -16,9 +16,7 @@ export class AuthController {
 
   @Post('signin')
   async signIn(@Body() input: SignInDto) {
-    const user = await this.authService.validateUser(input);
-
-    return this.authService.signIn(user);
+    return await this.authService.signIn(input);
   }
 
   @Post('signup')

@@ -1,4 +1,4 @@
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './product/product.module';
@@ -11,6 +11,12 @@ import { Order } from './order/order.entity';
 import { OrderItem } from './order/order-item.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { RoleModule } from './role/role.module';
+import { DataSource } from 'typeorm';
+import { RoleName } from './role/role.enum';
+import { AuthService } from './auth/auth.service';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './role/role.guard';
 
 @Module({
   imports: [
@@ -27,9 +33,54 @@ import { AuthModule } from './auth/auth.module';
       entities: [Product, User, Role, Cart, CartItem, Order, OrderItem],
       synchronize: process.env.NODE_ENV === 'production' ? false : true,
     }),
+    RoleModule,
     ProductModule,
     UserModule,
     AuthModule,
   ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private configService: ConfigService,
+    private dataSource: DataSource,
+    private authService: AuthService,
+  ) {}
+
+  async onModuleInit() {
+    const superadmin = await this.dataSource.manager.findOneBy(User, {
+      email: 'superadmin@mail.com',
+    });
+    const roles = await this.dataSource.manager.find(Role);
+
+    if (!roles.length) {
+      const allRole: { name: RoleName }[] = [];
+      for (const role in RoleName) {
+        allRole.push(
+          this.dataSource.manager.create(Role, { name: RoleName[role] }),
+        );
+      }
+      await this.dataSource.manager.save(allRole);
+    }
+
+    if (!superadmin) {
+      const password = await this.authService.hashData(
+        this.configService.get<string>('SUPERADMIN_PASSWORD'),
+      );
+      const newUser = this.dataSource.manager.create(User, {
+        email: this.configService.get<string>('SUPERADMIN_MAIL'),
+        password,
+        firstname: this.configService.get<string>('SUPERADMIN_FIRSTNAME'),
+        lastname: this.configService.get<string>('SUPERADMIN_LASTNAME'),
+        role: { id: 1 },
+      });
+
+      await this.dataSource.manager.save(newUser);
+    }
+  }
+}
