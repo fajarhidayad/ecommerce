@@ -1,22 +1,20 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductModule } from './product/product.module';
-import { Product } from './product/product.entity';
-import { User } from './user/user.entity';
-import { Role } from './role/role.entity';
-import { Cart } from './cart/cart.entity';
-import { CartItem } from './cart/cart-item.entity';
-import { Order } from './order/order.entity';
-import { OrderItem } from './order/order-item.entity';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
-import { RoleModule } from './role/role.module';
 import { DataSource } from 'typeorm';
-import { RoleName } from './role/role.enum';
+import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './role/role.guard';
+import { CartItem } from './cart/cart-item.entity';
+import { Cart } from './cart/cart.entity';
+import { OrderItem } from './order/order-item.entity';
+import { Order } from './order/order.entity';
+import { Product } from './product/product.entity';
+import { ProductModule } from './product/product.module';
+import { Role } from './role/role.entity';
+import { RoleName } from './role/role.enum';
+import { RoleModule } from './role/role.module';
+import { User } from './user/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -38,12 +36,7 @@ import { RolesGuard } from './role/role.guard';
     UserModule,
     AuthModule,
   ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [],
 })
 export class AppModule {
   constructor(
