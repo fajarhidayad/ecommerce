@@ -4,12 +4,14 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '../role/role.entity';
+import { Role } from '../../role/role.entity';
 import { Cart } from 'src/cart/cart.entity';
 import { Order } from 'src/order/order.entity';
+import { RefreshToken } from 'src/auth/entitites/refresh-token.entitty';
 
 @Entity('user')
 export class User {
@@ -60,4 +62,7 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
+  refresh_token: RefreshToken;
 }

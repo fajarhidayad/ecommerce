@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { OrderItem } from './order-item.entity';
-import { User } from 'src/user/user.entity';
+import { User } from 'src/user/entities/user.entity';
 
 export enum OrderStatus {
   UNPAID = 'UNPAID',

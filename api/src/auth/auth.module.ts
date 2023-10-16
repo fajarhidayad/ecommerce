@@ -1,25 +1,22 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtConfigService } from './jwt.service';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtRefreshStrategy, JwtStrategy } from './strategies';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RefreshToken } from './entitites/refresh-token.entitty';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useClass: JwtConfigService,
-      inject: [ConfigService],
-    }),
+    JwtModule.register({}),
+    TypeOrmModule.forFeature([RefreshToken]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -13,13 +13,15 @@ import { ProductModule } from './product/product.module';
 import { Role } from './role/role.entity';
 import { RoleName } from './role/role.enum';
 import { RoleModule } from './role/role.module';
-import { User } from './user/user.entity';
+import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
+import { RefreshToken } from './auth/entitites/refresh-token.entitty';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.production', '.env'],
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -28,7 +30,16 @@ import { UserModule } from './user/user.module';
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'root',
       database: process.env.DB_NAME || 'store',
-      entities: [Product, User, Role, Cart, CartItem, Order, OrderItem],
+      entities: [
+        Product,
+        User,
+        Role,
+        Cart,
+        CartItem,
+        Order,
+        OrderItem,
+        RefreshToken,
+      ],
       synchronize: process.env.NODE_ENV === 'production' ? false : true,
     }),
     RoleModule,

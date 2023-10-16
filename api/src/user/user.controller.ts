@@ -5,12 +5,12 @@ import { RolesGuard } from 'src/role/role.guard';
 import { Roles } from 'src/role/role.decorator';
 import { RoleName } from 'src/role/role.enum';
 
+@Roles(RoleName.SUPERADMIN, RoleName.ADMIN)
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @Roles(RoleName.SUPERADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   findAll() {
     return this.userService.findAll();
