@@ -11,8 +11,16 @@ export class ProductService {
     private productRepository: Repository<Product>,
   ) {}
 
-  findAll(): Promise<Product[]> {
-    return this.productRepository.find();
+  async findAll(): Promise<Product[]> {
+    const limit = 10;
+    const skip = 0;
+    const products = await this.productRepository
+      .createQueryBuilder('product')
+      .limit(limit)
+      .skip(skip)
+      .getMany();
+
+    return products;
   }
 
   async findById(id: string): Promise<Product> {
