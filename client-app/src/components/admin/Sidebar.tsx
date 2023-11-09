@@ -11,7 +11,19 @@ export default function Sidebar() {
       <ul>
         <li className="mb-5">
           <div className="flex flex-col gap-2">
-            <h3 className="font-semibold text-slate-600 mb-1">Products</h3>
+            <Link
+              href={'/admin/dashboard'}
+              className="rounded-lg px-3 py-2 hover:bg-gray-200 transition-all duration-200 ease-in-out"
+            >
+              Dashboard
+            </Link>
+          </div>
+        </li>
+        <li className="mb-5">
+          <div className="flex flex-col gap-2">
+            <h3 className="font-semibold text-slate-600 mb-1 text-sm">
+              Products
+            </h3>
             <Link
               href={'/admin/products'}
               className="rounded-lg px-3 py-2 hover:bg-gray-200 transition-all duration-200 ease-in-out"
@@ -19,7 +31,7 @@ export default function Sidebar() {
               List
             </Link>
             <Link
-              href={'/admin/products'}
+              href={'/admin/products/create'}
               className="rounded-lg px-3 py-2 hover:bg-gray-200 transition-all duration-200 ease-in-out"
             >
               Create
@@ -28,21 +40,23 @@ export default function Sidebar() {
         </li>
         <li className="mb-5">
           <div className="flex flex-col gap-2">
-            <h3 className="font-semibold text-slate-600 mb-1">Orders</h3>
+            <h3 className="font-semibold text-slate-600 mb-1 text-sm">
+              Orders
+            </h3>
             <Link
-              href={'/admin/products'}
+              href={'/admin/orders'}
               className="rounded-lg px-3 py-2 hover:bg-gray-200 transition-all duration-200 ease-in-out"
             >
               List
             </Link>
             <Link
-              href={'/admin/products'}
+              href={'/admin/orders'}
               className="rounded-lg px-3 py-2 hover:bg-gray-200 transition-all duration-200 ease-in-out"
             >
               Processed
             </Link>
             <Link
-              href={'/admin/products'}
+              href={'/admin/orders'}
               className="rounded-lg px-3 py-2 hover:bg-gray-200 transition-all duration-200 ease-in-out"
             >
               Completed
@@ -51,9 +65,9 @@ export default function Sidebar() {
         </li>
         <li className="mb-5">
           <div className="flex flex-col gap-2">
-            <h3 className="font-semibold text-slate-600 mb-1">Users</h3>
+            <h3 className="font-semibold text-slate-600 mb-1 text-sm">Users</h3>
             <Link
-              href={'/admin/products'}
+              href={'/admin/users'}
               className="rounded-lg px-3 py-2 hover:bg-gray-200 transition-all duration-200 ease-in-out"
             >
               List

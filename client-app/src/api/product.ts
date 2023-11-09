@@ -19,3 +19,12 @@ export const getProducts = async () => {
     throw new Error(error.response.data.message);
   }
 };
+
+export const getProductById = async (id: string) => {
+  try {
+    const response = await api.get(`/products/${id}`);
+    return response.data as Product;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};

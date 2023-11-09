@@ -37,11 +37,13 @@ export default async function Home() {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        <div className="text-center">
-          <Button size={'lg'} variant={'secondary'}>
-            View All Products
-          </Button>
-        </div>
+        {products.length > 0 && (
+          <div className="text-center">
+            <Button size={'lg'} variant={'secondary'} asChild>
+              <Link href={'/explore'}>View All Products</Link>
+            </Button>
+          </div>
+        )}
       </section>
 
       <section className="bg-gray-50 mb-10 py-8">
